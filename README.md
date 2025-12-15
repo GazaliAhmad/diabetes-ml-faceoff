@@ -1,68 +1,87 @@
-# ⚔️ Diabetes ML Faceoff: Math vs. Logic
+
+# Model Selection Under Constraint
+
+## Project Overview
+
+This project is a case study in model selection under constraint. The objective was not to identify the most accurate model, but to examine how different machine learning approaches behave when data is limited, ambiguous, and partially unreliable.
+
+The dataset used is intentionally small and noisy, reflecting common real-world conditions where analytical judgement matters more than algorithmic sophistication.
+
+This repository documents the reasoning behind selecting one model as fit-for-purpose, and rejecting others that appeared statistically attractive but posed interpretability or stability risks.
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue) ![Scikit-Learn](https://img.shields.io/badge/Library-Scikit--Learn-orange) ![Status](https://img.shields.io/badge/Status-Complete-green)
 
-### 📋 Project Overview
-This project is a comparative analysis of two different Machine Learning approaches to predict the risk of diabetes in patients. The goal was to determine whether a mathematical linear approach or a logic-based non-linear approach yields better diagnostic accuracy.
+---
 
-**The Contenders:**
-1.  **"Math" (Polynomial Logistic Regression):** Attempts to fit a curved line through the data.
-2.  **"Logic" (Random Forest Classifier):** Uses an ensemble of decision trees to create complex rules.
+## Context
+
+In many applied settings, especially outside of large technology firms, data quality and quantity are the primary constraints. Models that perform well numerically can still be unsuitable if they are difficult to interpret, unstable under small samples, or prone to misleading confidence.
+
+This project treats model selection as a **risk decision**, not a leaderboard exercise.
 
 ---
 
-### 📊 Key Findings
+## Models Evaluated
 
-| Metric | Polynomial Logistic Regression | Random Forest (Optimized) |
-| :--- | :--- | :--- |
-| **Accuracy** | ~79% | **~93%** |
-| **Strength** | Interpretable coefficients | Handles complex, non-linear patterns |
-| **Weakness** | Missed 46% of diabetic cases | Requires careful tuning to avoid overfitting |
+Two modelling approaches were evaluated:
 
-**🏆 Winner:** The **Random Forest** model proved superior, correctly identifying critical risk factors like **Insulin** and **Pregnancies** that the linear model struggled to capture.
+- **Polynomial Logistic Regression**  
+  Chosen as an interpretable baseline with transparent coefficients and predictable behaviour.
 
----
+- **Random Forest Classifier**  
+  Evaluated for its ability to capture non-linear interactions, at the cost of interpretability and stability.
 
-### 🛠️ The Journey
-The project followed a rigorous data science lifecycle:
-
-1.  **Data Cleaning:**
-    * Handled missing values.
-    * Identified and removed physiological impossibilities (e.g., `BMI = 0`, `BloodPressure = 0`).
-2.  **Exploratory Data Analysis (EDA):**
-    * Discovered a significant **"BMI Gap"**: Diabetic patients averaged a BMI of ~34 vs. ~29 for healthy patients.
-    * Visualized correlations between Age, Glucose, and Outcome.
-3.  **Feature Engineering:**
-    * Implemented Polynomial Features (Degree 2) to test non-linear relationships.
-    * Scaled data using `StandardScaler` for logistic regression.
-4.  **Model Optimization:**
-    * Tuned hyperparameters (n_estimators, max_depth) to maximize the Random Forest's performance.
+Models were assessed neutrally, without anthropomorphic or competitive framing.
 
 ---
 
-### 🚀 Real-World Simulation
-The final model was deployed in a simulation to diagnose a new, unseen patient.
+## Decision Criteria
 
-**Patient Profile:**
-* **Age:** 45 (Middle-Aged)
-* **BMI:** 34.5 (Obese)
-* **Glucose:** 165 mg/dL (High)
-* **Insulin:** 180 mu U/ml (Elevated)
+Model selection was guided by the following criteria:
 
-**Model Diagnosis:**
-> **Result:** 🔴 High Risk
-> **Confidence:** 98.00%
-> **Recommendation:** Order HbA1c test immediately.
+- Interpretability of outputs  
+- Stability under small-sample conditions  
+- Susceptibility to overfitting  
+- Risk of misleading confidence  
 
-*Why is this important?*
-The model successfully identified a high-risk patient with **98% confidence**, demonstrating its ability to catch critical cases that require immediate medical attention.
+Predictive accuracy was considered contextual information, not a decisive metric.
 
 ---
 
-### 📂 Repository Structure
+## Observations (Contextual Metrics)
 
-```text
-├── Diabetes_ML_Faceoff_Math_vs_Logic.ipynb   # The main notebook containing all code and analysis
-├── diabetes_model_opt.pkl                    # The saved Random Forest model (ready for deployment)
-├── scaler_opt.pkl                            # The scaler object for pre-processing new data
-└── README.md                                 # Project documentation
+Observed accuracy values are presented for context only. They informed understanding of model behaviour but were not used as the primary decision driver.
+
+| Criterion | Logistic Regression | Random Forest |
+|--------|---------------------|---------------|
+| Interpretability | High | Low |
+| Stability | High | Medium |
+| Risk of overconfidence | Low | High |
+| Observed accuracy (contextual) | Lower | Higher |
+
+---
+
+## Decision Outcome
+
+Although the Random Forest model showed higher observed accuracy in this dataset, it was not selected due to interpretability limitations and instability under the given data constraints.
+
+The Logistic Regression model was selected as fit-for-purpose, as it provided clearer insight, more stable behaviour, and lower epistemic risk in this context.
+
+---
+
+## What This Project Does Not Claim
+
+- This is not a medical or clinical diagnostic tool  
+- This does not claim causal inference  
+- This does not argue that higher accuracy is undesirable  
+- This does not generalise beyond the dataset and constraints examined  
+
+The purpose of this project is to demonstrate **decision reasoning**, not predictive superiority.
+
+---
+
+## Key Takeaway
+
+In constrained data environments, the least misleading model is often more valuable than the most accurate one.
+
+Model selection is not purely a technical optimisation problem. It is a judgement call under uncertainty.
